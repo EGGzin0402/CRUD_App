@@ -13,7 +13,6 @@ class ItemEntryViewModel(private val itemsRepository: ItemsRepository) : ViewMod
     var itemUiState by mutableStateOf(ItemUiState())
         private set
 
-
     fun updateUiState(itemDetails: ItemDetails) {
         itemUiState =
             ItemUiState(itemDetails = itemDetails, isEntryValid = validateInput(itemDetails))
@@ -21,7 +20,7 @@ class ItemEntryViewModel(private val itemsRepository: ItemsRepository) : ViewMod
 
     private fun validateInput(uiState: ItemDetails = itemUiState.itemDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
+            name.isNotBlank() && price.isNotBlank() && date.isNotBlank()
         }
     }
 
@@ -41,7 +40,8 @@ data class ItemDetails(
     val id: Int = 0,
     val name: String = "",
     val price: String = "",
-    val quantity: String = "",
+    val date: String = "",
+    val profit: Boolean = false
 )
 
 
@@ -49,7 +49,8 @@ fun ItemDetails.toItem(): Item = Item(
     id = id,
     name = name,
     price = price.toDoubleOrNull() ?: 0.0,
-    quantity = quantity.toIntOrNull() ?: 0
+    date = date,
+    profit = profit
 )
 
 fun Item.formatedPrice(): String {
@@ -65,5 +66,6 @@ fun Item.toItemDetails(): ItemDetails = ItemDetails(
     id = id,
     name = name,
     price = price.toString(),
-    quantity = quantity.toString()
+    date = date,
+    profit = profit
 )

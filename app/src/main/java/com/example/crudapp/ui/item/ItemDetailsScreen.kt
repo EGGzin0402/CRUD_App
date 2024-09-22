@@ -14,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,18 +32,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.crudapp.R
 import com.example.crudapp.TopAppBar
 import com.example.crudapp.data.Item
 import com.example.crudapp.ui.AppViewModelProvider
 import com.example.crudapp.ui.navigation.Destination
-import com.example.crudapp.ui.theme.CRUDAppTheme
 import kotlinx.coroutines.launch
 
 object ItemDetailsDestination : Destination {
@@ -77,6 +75,7 @@ fun ItemDetailsScreen(
             FloatingActionButton(
                 onClick = { navigateToEditItem(uiState.value.itemDetails.id) },
                 shape = MaterialTheme.shapes.medium,
+                containerColor = Color.Black,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 
             ) {
@@ -89,7 +88,6 @@ fun ItemDetailsScreen(
     ) { innerPadding ->
         ItemDetailsBody(
             itemDetailsUiState = uiState.value,
-            onSellItem = { viewModel.reduceQuantityByOne() },
             onDelete = {
                 coroutineScope.launch {
                     viewModel.deleteItem()
@@ -110,7 +108,6 @@ fun ItemDetailsScreen(
 @Composable
 private fun ItemDetailsBody(
     itemDetailsUiState: ItemDetailsUiState,
-    onSellItem: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -124,14 +121,6 @@ private fun ItemDetailsBody(
             item = itemDetailsUiState.itemDetails.toItem(),
             modifier = Modifier.fillMaxWidth()
         )
-        Button(
-            onClick = onSellItem,
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.small,
-            enabled = true
-        ) {
-            Text(stringResource(R.string.sell))
-        }
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -159,7 +148,7 @@ fun ItemDetails(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     ) {
@@ -179,15 +168,22 @@ fun ItemDetails(
                 )
             )
             ItemDetailsRow(
-                labelResID = R.string.quantity_in_stock,
-                itemDetail = item.quantity.toString(),
+                labelResID = R.string.price,
+                itemDetail = item.formatedPrice(),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
             )
             ItemDetailsRow(
-                labelResID = R.string.price,
-                itemDetail = item.formatedPrice(),
+                labelResID = R.string.date,
+                itemDetail = item.date,
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                )
+            )
+            ItemDetailsRow(
+                labelResID = R.string.profit,
+                itemDetail = if (item.profit){"Entrada"} else {"Saída"},
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
@@ -229,17 +225,3 @@ private fun DeleteConfirmationDialog(
         })
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ItemDetailsScreenPreview() {
-    CRUDAppTheme {
-        ItemDetailsBody(
-            ItemDetailsUiState(
-                outOfStock = true,
-                itemDetails = ItemDetails(1, "Pen", "$100", "10")
-            ),
-            onSellItem = {},
-            onDelete = {}
-        )
-    }
-}

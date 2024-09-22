@@ -1,23 +1,24 @@
 <resources>
-    <string name="app_name">CRUD App</string>
+    <string name="app_name">CRUD App - Controle Financeiro</string>
     <string name="attention">Atenção</string>
     <string name="back_button">Voltar</string>
     <string name="delete">Deletar</string>
     <string name="delete_question">Tem certeza que quer deletar?</string>
     <string name="no_item_description">Oops!\nSem itens.\nToque em + para adicionar.</string>
     <string name="edit_item_title">Editar Item</string>
-    <string name="item">Item</string>
+    <string name="item">Finança</string>
     <string name="item_detail_title">Detalhes do Item</string>
     <string name="item_entry_title">Adicionar Item</string>
     <string name="item_name_req">Nome do Item*</string>
     <string name="item_price_req">Preço do Item*</string>
     <string name="no">Não</string>
     <string name="price">Preço</string>
-    <string name="quantity_in_stock">Quantidade em estoque</string>
-    <string name="in_stock">%d em estoque</string>
+    <string name="date">Data</string>
+    <string name="profit">Tipo</string>
     <string name="quantity_req">Quantidade em Estoque*</string>
     <string name="save_action">Salvar</string>
     <string name="sell">Vender</string>
     <string name="yes">Sim</string>
     <string name="required_fields">*campos necessários</string>
+    <string name="chart_title">Gráfico de despesas</string>
 </resources>
